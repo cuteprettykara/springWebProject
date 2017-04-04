@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.4.2</version>
+			<version>3.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -114,6 +114,12 @@
 			</exclusions>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.bgee.log4jdbc-log4j2</groupId>
+			<artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+			<version>1.16</version>
+		</dependency>
+
 
 		<!-- @Inject -->
 		<dependency>
