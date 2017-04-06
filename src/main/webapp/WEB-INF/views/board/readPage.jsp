@@ -18,6 +18,8 @@
 <form role="form" method="post">
 
 	<input type='hidden' name='bno' value="${boardVO.bno}">
+	<input type='hidden' name='page' value="${cri.page}">
+	<input type='hidden' name='perPageNum' value="${cri.perPageNum}">
 
 </form>
 
@@ -40,7 +42,7 @@
 <div class="box-footer">
 	<button type="submit" class="btn btn-warning">Modify</button>
 	<button type="submit" class="btn btn-danger">REMOVE</button>
-	<button type="submit" class="btn btn-primary">LIST ALL</button>
+	<button type="submit" class="btn btn-primary">GO LIST</button>
 </div>
 
 
@@ -53,7 +55,7 @@ $(document).ready(function(){
 	console.log(formObj);
 	
 	$(".btn-warning").on("click", function(){
-		formObj.attr("action", "/board/modify");
+		formObj.attr("action", "/board/modifyPage");
 		formObj.attr("method", "get");		
 		formObj.submit();
 	});
@@ -64,7 +66,9 @@ $(document).ready(function(){
 	});
 	
 	$(".btn-primary").on("click", function(){
-		self.location = "/board/listAll";
+		formObj.attr("action", "/board/listPage");
+		formObj.attr("method", "get");		
+		formObj.submit();
 	});
 	
 });
