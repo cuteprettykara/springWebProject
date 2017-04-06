@@ -12,4 +12,5 @@ public interface BoardService {
 	public void remove(Integer bno) throws Exception;
 	public List<BoardVO> listAll() throws Exception;
 	public List<BoardVO> listCriteria(Criteria cri) throws Exception;
+	public int listCountCriteria(Criteria cri) throws Exception;
 }
