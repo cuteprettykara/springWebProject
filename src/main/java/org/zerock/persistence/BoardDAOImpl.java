@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.SearchCriteria;
 import org.zerock.web.SampleController5;
 
 @Repository
@@ -64,6 +65,16 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int countPaging(Criteria cri) throws Exception {
 		return sqlSession.selectOne(namespace + ".countPaging", cri);
+	}
+
+	@Override
+	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {
+		return sqlSession.selectList(namespace + ".listSearch", cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) throws Exception {
+		return sqlSession.selectOne(namespace + ".listSearchCount", cri);
 	}
 
 }

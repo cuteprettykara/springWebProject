@@ -42,11 +42,11 @@ public class SearchBoardController {
 	public void listPage(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 		logger.info(cri.toString());
 		
-		model.addAttribute("list", service.listCriteria(cri));
+		model.addAttribute("list", service.listSearchCriteria(cri));
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(service.listCountCriteria(cri));
+		pageMaker.setTotalCount(service.listSearchCount(cri));
 		
 		logger.info(pageMaker.toString());
 		model.addAttribute("pageMaker", pageMaker);
