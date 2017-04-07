@@ -14,9 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.PageMaker;
+import org.zerock.domain.SearchCriteria;
 import org.zerock.service.BoardService;
 
-@Controller
+//@Controller
 @RequestMapping("/board/*")
 public class BoardController {
 	
@@ -50,7 +51,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/readPage", method=RequestMethod.GET)
-	public void read(@RequestParam("bno") int bno, @ModelAttribute("cri") Criteria cri, 
+	public void read(@RequestParam("bno") int bno, @ModelAttribute("cri") SearchCriteria cri, 
 			Model model) throws Exception {
 		model.addAttribute(service.read(bno));
 	}

@@ -46,7 +46,7 @@
 						<tr>
 							<td>${boardVO.bno}</td>
 							<td>
-								<a href='/board/readPage${pageMaker.makeSearch(pageMaker.cri.page)}&bno=${boardVO.bno}'>
+								<a href='/sboard/readPage${pageMaker.makeSearch(pageMaker.cri.page)}&bno=${boardVO.bno}'>
 									${boardVO.title}
 								</a>
 							</td>
