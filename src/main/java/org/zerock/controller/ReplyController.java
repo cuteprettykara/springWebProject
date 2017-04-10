@@ -1,9 +1,13 @@
 package org.zerock.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.zerock.domain.Criteria;
+import org.zerock.domain.PageMaker;
 import org.zerock.domain.ReplyVO;
 import org.zerock.service.ReplyService;
 
 @RestController
 @RequestMapping("/replies")
 public class ReplyController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ReplyController.class);
 
 	@Inject
 	private ReplyService service;
@@ -77,6 +85,38 @@ public class ReplyController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/{bno}/{page}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listPage(
+			@PathVariable("bno") Integer bno,
+			@PathVariable("page") Integer page) throws Exception {
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		
+		try {
+			Criteria cri = new Criteria();
+			cri.setPage(page);
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			pageMaker.setTotalCount(service.count(bno));
+
+			logger.info(pageMaker.toString());
+			
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("list", service.listReplyPage(bno, cri));
+			map.put("pageMaker", pageMaker);
+			
+			entity = new ResponseEntity<>(map, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		return entity;
