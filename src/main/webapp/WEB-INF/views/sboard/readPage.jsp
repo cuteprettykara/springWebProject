@@ -43,9 +43,9 @@
 				<!-- /.box-body -->
 
 				<div class="box-footer">
-					<button type="submit" class="btn btn-warning">Modify</button>
-					<button type="submit" class="btn btn-danger">REMOVE</button>
-					<button type="submit" class="btn btn-primary">GO LIST</button>
+					<button type="submit" class="btn btn-warning" id="modifyBtn">Modify</button>
+					<button type="submit" class="btn btn-danger" id="removeBtn">REMOVE</button>
+					<button type="submit" class="btn btn-primary" id="goListBtn">GO LIST</button>
 				</div>
 
 			</div>
@@ -164,6 +164,7 @@
 	var replyPage = 1;
 	
 	function getPage(pageInfo) {
+		console.log("getPage: " + pageInfo);
 		$.getJSON(pageInfo, function(data) {
 			printData(data.list, $("#repliesDiv"), $('#template'));
 			printPaging(data.pageMaker, $(".pagination"));
@@ -199,6 +200,7 @@
 		if ($(".timeline li").size() > 1) {
 			return;
 		}
+		replyPage = 1;
 		getPage("/replies/" + bno + "/1");
 	});
 	
@@ -211,6 +213,89 @@
 		getPage("/replies/" + bno + "/" + replyPage);
 		
 	});
+	
+	$("#replyAddBtn").on("click", function() {
+		
+		var replyer = $("#newReplyWriter").val();
+		var replytext = $("#newReplyText").val();
+		
+		$.ajax({
+			type : 'post',
+			url : '/replies/',
+			headers : {
+				"Content-type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			dataType : 'text',
+			data : JSON.stringify({
+				bno : bno,
+				replyer : replyer,
+				replytext : replytext
+			}),
+			success : function(result) {
+				console.log("result: " + result);
+				if (result == 'SUCCESS') {
+					alert('등록되었습니다.');
+					//replyPage = 1;
+					getPage("/replies/" + bno + "/" + replyPage);
+				}
+			}
+		});
+	});
+	
+	$(".timeline").on("click", ".replyLi", function(event){
+		
+		var reply = $(this);
+		
+		$("#replytext").val(reply.find('.timeline-body').text());
+		$(".modal-title").html(reply.attr("data-rno"));
+		
+	});
+	
+	$("#replyModBtn").on("click", function() {
+		var rno = $(".modal-title").html();
+		var replytext = $("#replytext").val();
+		
+		$.ajax({
+			type : 'put',
+			url : '/replies/' + rno,
+			headers : {
+				"Content-type" : "application/json",
+				"X-HTTP-Method-Override" : "PUT"
+			},
+			dataType : 'text',
+			data : JSON.stringify({replytext : replytext}),
+			success : function(result) {
+				console.log("result: " + result);
+				if (result == 'SUCCESS') {
+					alert('수정되었습니다.');
+					getPage("/replies/" + bno + "/" + replyPage);
+				}
+			}
+		});
+	});
+	
+	$("#replyDelBtn").on("click", function() {
+		var rno = $(".modal-title").html();
+		var replytext = $("#replytext").val();
+		
+		$.ajax({
+			type : 'delete',
+			url : '/replies/' + rno,
+			headers : {
+				"Content-type" : "application/json",
+				"X-HTTP-Method-Override" : "DELETE"
+			},
+			dataType : 'text',
+			success : function(result) {
+				console.log("result: " + result);
+				if (result == 'SUCCESS') {
+					alert('삭제되었습니다.');
+					getPage("/replies/" + bno + "/" + replyPage);
+				}
+			}
+		});
+	});
 </script>
 
 <script>				
@@ -220,18 +305,18 @@ $(document).ready(function(){
 	
 	console.log(formObj);
 	
-	$(".btn-warning").on("click", function(){
+	$("#modifyBtn").on("click", function(){
 		formObj.attr("action", "/sboard/modifyPage");
 		formObj.attr("method", "get");		
 		formObj.submit();
 	});
 	
-	$(".btn-danger").on("click", function(){
+	$("#removeBtn").on("click", function(){
 		formObj.attr("action", "/sboard/removePage");
 		formObj.submit();
 	});
 	
-	$(".btn-primary").on("click", function(){
+	$("#goListBtn ").on("click", function(){
 		formObj.attr("action", "/sboard/list");
 		formObj.attr("method", "get");		
 		formObj.submit();
