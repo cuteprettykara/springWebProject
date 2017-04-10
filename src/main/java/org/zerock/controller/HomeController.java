@@ -1,4 +1,4 @@
-package org.zerock.web;
+package org.zerock.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -34,6 +34,11 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home";
+	}
+	
+	@RequestMapping(value="/test", method=RequestMethod.GET)
+	public void ajaxTest() {
+		
 	}
 	
 }
