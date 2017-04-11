@@ -16,6 +16,7 @@
 			 , writer
 			 , regdate
 			 , viewcnt
+			 , replycnt
 		  from tbl_board
 		 where bno = #{bno}   
 	</select>
@@ -40,6 +41,7 @@
 			 , writer
 			 , regdate
 			 , viewcnt
+			 , replycnt
 		  from tbl_board
 		 where bno > 0 
 		 order by bno desc, regdate desc 
@@ -69,6 +71,7 @@
 			 , writer
 			 , regdate
 			 , viewcnt
+			 , replycnt
 		  from tbl_board
 		 where bno > 0 
 		 order by bno desc, regdate desc 
@@ -120,6 +123,7 @@
 			 , writer
 			 , regdate
 			 , viewcnt
+			 , replycnt
 		  from tbl_board
 		 where bno > 0 
 		 ]]>
@@ -141,4 +145,20 @@
 		
 		<include refid="search" />
 	</select>
+	
+	<update id="updateReplyCnt">
+		<![CDATA[
+		update tbl_board
+		   set replycnt = replycnt + #{amount}
+		 where bno = #{bno}
+		]]> 
+	</update>
+	
+	<update id="updateViewCnt">
+		<![CDATA[
+		update tbl_board
+		   set viewcnt = viewcnt + 1
+		 where bno = #{bno}
+		]]> 
+	</update>
 </mapper>

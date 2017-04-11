@@ -53,4 +53,9 @@ public class ReplyDAOImpl implements ReplyDAO {
 		return sqlSession.selectOne(namespace + ".count", bno);
 	}
 
+	@Override
+	public int getBno(Integer rno) throws Exception {
+		return sqlSession.selectOne(namespace + ".getBno", rno);
+	}
+
 }

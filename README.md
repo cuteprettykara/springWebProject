@@ -47,3 +47,6 @@ insert into tbl_user(uid, upw, uname) values('user01', 'user01', 'CAPTAIN');
 insert into tbl_user(uid, upw, uname) values('user02', 'user02', 'HULK'); 
 insert into tbl_user(uid, upw, uname) values('user03', 'user03', 'Thor'); 
 insert into tbl_user(uid, upw, uname) values('user10', 'user10', 'Quick Silver'); 
+
+[Part 4 : Ch5]
+alter table tbl_board add column replycnt int default 0;
