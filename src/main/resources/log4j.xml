@@ -17,6 +17,12 @@
 	<logger name="org.zerock.controller">
 		<level value="info" />
 	</logger>
+	<logger name="org.zerock.service">
+		<level value="info" />
+	</logger>
+	<logger name="org.zerock.aop">
+		<level value="info" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">

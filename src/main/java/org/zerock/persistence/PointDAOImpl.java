@@ -15,7 +15,7 @@ public class PointDAOImpl implements PointDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PointDAOImpl.class);
 	
-	private static final String namespace = "org.zerock.mapper.MessageMapper";
+	private static final String namespace = "org.zerock.mapper.PointMapper";
 	
 	@Inject
 	private SqlSession session;
