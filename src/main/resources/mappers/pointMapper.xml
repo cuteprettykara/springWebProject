@@ -6,7 +6,7 @@
 <mapper namespace="org.zerock.mapper.PointMapper">
 	<update id="updatePoint">
 		update tbl_user 
-		   set upoint = #{point}
+		   set upoint = upoint + #{point}
 		 where uid = #{uid} 
 	</update>
 </mapper>
