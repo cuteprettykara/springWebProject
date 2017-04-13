@@ -168,4 +168,13 @@
 		values (#{fullname}, LAST_INSERT_ID())
 		]]> 
 	</insert>
+	
+	<select id="getAttach" resultType="string">
+		<![CDATA[
+		select fullname 
+		  from tbl_attach
+		 where bno = #{bno}
+		 order by regdate 
+		]]> 
+	</select>
 </mapper>

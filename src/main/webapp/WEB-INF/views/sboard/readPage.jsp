@@ -3,7 +3,27 @@
 
 <%@include file="../include/header.jsp"%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+<script type="text/javascript" src="/resources/js/upload.js"></script>
 
+<style type="text/css">
+	.popup {position: absolute;}
+	.back { background-color: gray; opacity:0.5; width: 100%; height: 300%; overflow:hidden;  z-index:1101;}
+	.front { 
+   		z-index:1110; opacity:1; boarder:1px; margin: auto; 
+  	}
+ 	.show{
+  		position:relative;
+   		max-width: 1200px; 
+   		max-height: 800px; 
+   		overflow: auto;       
+ 	} 
+</style>
+
+<div class='popup back' style="display:none;"></div>
+<div id="popup_front" class='popup front' style="display:none;">
+	<img id="popup_img">
+</div>
+    
 <!-- Main content -->
 <section class="content">
 	<div class="row">
@@ -42,6 +62,8 @@
 				</div>
 				<!-- /.box-body -->
 
+				<ul class="mailbox-attachments clearfix uploadedList"></ul>
+				
 				<div class="box-footer">
 					<button type="submit" class="btn btn-warning" id="modifyBtn">Modify</button>
 					<button type="submit" class="btn btn-danger" id="removeBtn">REMOVE</button>
@@ -121,6 +143,16 @@
 <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+<script id="templateAttach" type="text/x-handlebars-template">
+<li data-src='{{fullName}}'>
+  <span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
+  <div class="mailbox-attachment-info">
+	<a href="{{getLink}}" class="mailbox-attachment-name">
+		{{fileName}}
+    </a>
+  </div>
+</li>             
+</script>  
 
 <script id="template" type="text/x-handlebars-template">
 {{#each .}}
@@ -297,6 +329,8 @@
 			}
 		});
 	});
+	
+	
 </script>
 
 <script>				
@@ -321,6 +355,41 @@ $(document).ready(function(){
 		formObj.attr("action", "/sboard/list");
 		formObj.attr("method", "get");		
 		formObj.submit();
+	});
+	
+	var bno = ${boardVO.bno};
+	var template = Handlebars.compile($("#templateAttach").html());
+	
+	$.getJSON("/sboard/getAttach/" + bno, function(list){
+		$(list).each(function(){
+			var fileInfo = getFileInfo(this);
+			var html = template(fileInfo);
+			$(".uploadedList").append(html);
+		});
+	});
+	
+	$(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
+		
+		var fileLink = $(this).attr("href");
+		
+		if(checkImageType(fileLink)){
+			
+			event.preventDefault();
+					
+			var imgTag = $("#popup_img");
+			imgTag.attr("src", fileLink);
+			
+			console.log(imgTag.attr("src"));
+					
+			$(".popup").show('slow');
+			imgTag.addClass("show");
+		}	
+	});
+	
+	$("#popup_img").on("click", function(){
+		
+		$(".popup").hide('slow');
+		
 	});
 	
 });
