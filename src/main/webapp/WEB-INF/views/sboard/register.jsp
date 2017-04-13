@@ -71,7 +71,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script id="template" type="text/x-handlebars-template">
+<script id="templateAttach" type="text/x-handlebars-template">
 <li>
   <span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
   <div class="mailbox-attachment-info">
@@ -86,52 +86,14 @@
 </script>  
 
 <script>
-var template = Handlebars.compile($("#template").html());
-
-$(".fileDrop").on("dragenter dragover", function(event) {
-	event.preventDefault();
-});
-
-$(".fileDrop").on("drop", function(event){
-	event.preventDefault();
-	
-	var files = event.originalEvent.dataTransfer.files;
-	
-	var file = files[0];
-
-	//console.log(file);
-	
-	var formData = new FormData();
-	formData.append("file", file);
-	
-	$.ajax({
-		type: 'POST',
-		url: '/uploadAjax',
-		dataType:'text',
-		data: formData,
-		processData: false,
-		contentType: false,
-		success: function(data){
-			
-			var fileInfo = getFileInfo(data);
-			var html = template(fileInfo);
-			$(".uploadedList").append(html);
-		  }
-	});	
-});
-
-$("#registerForm").submit(function(event){
-	event.preventDefault();
-	var that = $(this);
-	
-	var str ="";
-	$(".uploadedList .delbtn").each(function(index){
-		 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("href") +"'> ";
-	});
-	
-	that.append(str);
-
-	that.get(0).submit();
-});
+var template = Handlebars.compile($("#templateAttach").html());
 </script>
+<!-- #####################################-->
+<!-- register.jsp / modifyPage.jsp 중복 부분 -->
+<!-- #####################################-->
+<script type="text/javascript" src="/resources/js/upload_comm_register_modify.js"></script>
+<!-- #####################################-->
+<!-- register.jsp / modifyPage.jsp 중복 부분 -->
+<!-- #####################################-->
+
 <%@include file="../include/footer.jsp"%>

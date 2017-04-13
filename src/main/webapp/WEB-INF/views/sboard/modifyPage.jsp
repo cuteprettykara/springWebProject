@@ -6,15 +6,30 @@
 <script type="text/javascript" src="/resources/js/upload.js"></script>
 
 <style>
-.fileDrop {
-  width: 80%;
-  height: 100px;
-  border: 1px dotted gray;
-  background-color: lightslategrey;
-  margin: auto;
-  
-}
+	.fileDrop {
+	  width: 80%;
+	  height: 100px;
+	  border: 1px dotted gray;
+	  background-color: lightslategrey;
+	  margin: auto;
+	}
+	.popup {position: absolute;}
+	.back { background-color: gray; opacity:0.5; width: 100%; height: 300%; overflow:hidden;  z-index:1101;}
+	.front { 
+   		z-index:1110; opacity:1; boarder:1px; margin: auto; 
+  	}
+ 	.show{
+  		position:relative;
+   		max-width: 1200px; 
+   		max-height: 800px; 
+   		overflow: auto;       
+ 	} 
 </style>
+
+<div class='popup back' style="display:none;"></div>
+<div id="popup_front" class='popup front' style="display:none;">
+	<img id="popup_img">
+</div>
 
 <!-- Main content -->
 <section class="content">
@@ -85,7 +100,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script id="template" type="text/x-handlebars-template">
+<script id="templateAttach" type="text/x-handlebars-template">
 <li>
   <span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
   <div class="mailbox-attachment-info">
@@ -99,99 +114,35 @@
 </li>                
 </script>  
 
+
 <script>
-	$(document).ready(function() {
-		$(".btn-warning").on("click", function() {console.log("cancel");
- 			self.location = "/sboard/list?page=${cri.page}&perPageNum=${cri.perPageNum}"
-						  + "&searchType=${cri.searchType}"
-						  + "&keyword=${cri.keyword}";
-		});
+$(".btn-warning").on("click", function() {console.log("cancel");
+	self.location = "/sboard/list?page=${cri.page}&perPageNum=${cri.perPageNum}"
+			  + "&searchType=${cri.searchType}"
+			  + "&keyword=${cri.keyword}";
+});
 
-		$("#modifyForm").submit(function(event){console.log("submit");
-			event.preventDefault();
-			var that = $(this);
-			
-			var str ="";
-			$(".uploadedList .delbtn").each(function(index){
-				 str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("href") +"'> ";
-				 console.log(str);
-			});
-			
-			that.append(str);
-
-			that.get(0).submit(); 
-		});
+var template = Handlebars.compile($("#templateAttach").html());
+var bno = ${boardVO.bno};
+</script>	
 		
-		var template = Handlebars.compile($("#template").html());
+			
+<!-- #####################################-->
+<!-- register.jsp / modifyPage.jsp 중복 부분 -->
+<!-- #####################################-->
+<script type="text/javascript" src="/resources/js/upload_comm_register_modify.js"></script>
+<!-- #####################################-->
+<!-- register.jsp / modifyPage.jsp 중복 부분 -->
+<!-- #####################################-->
 
-		$(".fileDrop").on("dragenter dragover", function(event) {
-			event.preventDefault();
-		});
 
-		$(".fileDrop").on("drop", function(event){
-			event.preventDefault();
-			
-			var files = event.originalEvent.dataTransfer.files;
-			
-			var file = files[0];
 
-			//console.log(file);
-			
-			var formData = new FormData();
-			formData.append("file", file);
-			
-			$.ajax({
-				type: 'POST',
-				url: '/uploadAjax',
-				dataType:'text',
-				data: formData,
-				processData: false,
-				contentType: false,
-				success: function(data){
-					
-					var fileInfo = getFileInfo(data);
-					var html = template(fileInfo);
-					$(".uploadedList").append(html);
-				  }
-			});	
-		});
-		
-		var bno = ${boardVO.bno};
-		var template = Handlebars.compile($("#template").html());
-		
-		$.getJSON("/sboard/getAttach/" + bno, function(list){
-			$(list).each(function(){
-				var fileInfo = getFileInfo(this);
-				var html = template(fileInfo);
-				$(".uploadedList").append(html);
-			});
-		});
-		
-		$(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
-			
-			var fileLink = $(this).attr("href");
-			
-			if(checkImageType(fileLink)){
-				
-				event.preventDefault();
-						
-				var imgTag = $("#popup_img");
-				imgTag.attr("src", fileLink);
-				
-				console.log(imgTag.attr("src"));
-						
-				$(".popup").show('slow');
-				imgTag.addClass("show");
-			}	
-		});
-		
-		$("#popup_img").on("click", function(){
-			
-			$(".popup").hide('slow');
-			
-		});
-
-	});
-</script>
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+<!-- readPage.jsp / modifyPage.jsp 중복 부분 -->
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+<script type="text/javascript" src="/resources/js/upload_comm_read_modify.js"></script>
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+<!-- readPage.jsp / modifyPage.jsp 중복 부분 -->
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
 
 <%@include file="../include/footer.jsp"%>
