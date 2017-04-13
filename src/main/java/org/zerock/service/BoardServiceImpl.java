@@ -1,9 +1,12 @@
 package org.zerock.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,8 @@ import org.zerock.persistence.BoardDAO;
 @Service
 public class BoardServiceImpl implements BoardService {
 	
+	private static final Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
+	
 	@Inject
 	private BoardDAO dao;
 
@@ -24,7 +29,6 @@ public class BoardServiceImpl implements BoardService {
 		dao.create(board);		
 		
 		String[] files = board.getFiles();
-		
 		if (files == null) return;
 		
 		for (String fileName : files) {
@@ -39,9 +43,22 @@ public class BoardServiceImpl implements BoardService {
 		return dao.read(bno);
 	}
 
+	@Transactional
 	@Override
-	public void modify(BoardVO vo) throws Exception {
-		dao.update(vo);		
+	public void modify(BoardVO board) throws Exception {
+		dao.update(board);
+		
+		Integer bno = board.getBno();
+		dao.deleteAttach(bno);
+		
+		String[] files = board.getFiles();
+		logger.info(Arrays.toString(files));
+		
+		if (files == null) return;
+		
+		for (String fileName : files) {
+			dao.replaceAttach(fileName, bno);
+		}
 	}
 
 	@Override

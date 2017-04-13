@@ -80,7 +80,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public void updateReplyCnt(Integer bno, int amount) throws Exception {
-		Map<String, Object> paramMap = new HashMap();
+		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("bno", bno);
 		paramMap.put("amount", amount);
 		
@@ -100,6 +100,21 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public List<String> getAttach(Integer bno) throws Exception {
 		return sqlSession.selectList(namespace + ".getAttach", bno);
+	}
+
+	@Override
+	public void deleteAttach(Integer bno) throws Exception {
+		sqlSession.delete(namespace + ".deleteAttach", bno);
+		
+	}
+
+	@Override
+	public void replaceAttach(String fullName, Integer bno) throws Exception {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("fullname", fullName);	// 대소문자 주의: fullName 아님
+		paramMap.put("bno", bno);
+		
+		sqlSession.insert(namespace + ".replaceAttach",paramMap);		
 	}
 
 }
