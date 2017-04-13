@@ -85,9 +85,6 @@
 </li>                
 </script>  
 
-<script>
-var template = Handlebars.compile($("#templateAttach").html());
-</script>
 <!-- #####################################-->
 <!-- register.jsp / modifyPage.jsp 중복 부분 -->
 <!-- #####################################-->

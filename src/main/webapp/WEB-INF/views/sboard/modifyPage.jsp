@@ -122,7 +122,6 @@ $(".btn-warning").on("click", function() {console.log("cancel");
 			  + "&keyword=${cri.keyword}";
 });
 
-var template = Handlebars.compile($("#templateAttach").html());
 var bno = ${boardVO.bno};
 </script>	
 		

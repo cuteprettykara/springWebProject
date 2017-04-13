@@ -1,3 +1,5 @@
+var template = Handlebars.compile($("#templateAttach").html());
+
 var formObj = $("form[role='form']");
 
 formObj.submit(function(event){
