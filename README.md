@@ -50,3 +50,16 @@ insert into tbl_user(uid, upw, uname) values('user10', 'user10', 'Quick Silver')
 
 [Part 4 : Ch5]
 alter table tbl_board add column replycnt int default 0;
+
+
+
+[Part 5 : Ch6]
+create table tbl_attach (
+	fullName varchar(150) not null,
+    bno int not null,
+    regdate timestamp default now(),
+    primary key(fullName)
+);
+
+alter table tbl_attach add constraint fk_board_attach
+foreign key (bno) references tbl_board(bno);
