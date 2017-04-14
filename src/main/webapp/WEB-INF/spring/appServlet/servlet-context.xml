@@ -31,4 +31,24 @@
 		<beans:constructor-arg value="c:\\temp\\upload" />
 	</beans:bean>
 	
+	<beans:bean id="sampleInterceptor" class="org.zerock.interceptor.SampleInterceptor" />
+	<beans:bean id="loginInterceptor" class="org.zerock.interceptor.LoginInterceptor" />
+	<beans:bean id="authInterceptor" class="org.zerock.interceptor.AuthInterceptor" />
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/doA" />
+			<mapping path="/doB"/>
+			<beans:ref bean="sampleInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/user/loginPost" />
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/sboard/register" />
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 </beans:beans>

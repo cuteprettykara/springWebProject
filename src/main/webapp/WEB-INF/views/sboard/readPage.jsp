@@ -103,7 +103,7 @@
 			<ul class="timeline">
 				<!-- timeline time label -->
 				<li class="time-label" id="repliesDiv">
-					<span class="bg-green">Replies List <small id="replycntSmall">[ ${boardVO.replycnt} ]</small></span>
+					<span class="bg-green">Replies List <small>[ <span id="replycntSmall">${boardVO.replycnt}</span> ]</small></span>
 				</li>
 			</ul>
 
@@ -348,7 +348,7 @@ $(document).ready(function(){
 	
 	$("#removeBtn").on("click", function(){
 		var replyCnt =  $("#replycntSmall").html();
-		
+		//console.log(replyCnt);
 		if(replyCnt > 0 ){
 			alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
 			return;
@@ -366,7 +366,7 @@ $(document).ready(function(){
 		}
 		
 		formObj.attr("action", "/sboard/removePage");
-		formObj.submit();
+		formObj.submit(); 
 	});
 	
 	$("#goListBtn ").on("click", function(){

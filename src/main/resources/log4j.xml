@@ -23,6 +23,9 @@
 	<logger name="org.zerock.aop">
 		<level value="info" />
 	</logger>
+	<logger name="org.zerock.interceptor">
+		<level value="info" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
