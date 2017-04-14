@@ -169,6 +169,13 @@
 		]]> 
 	</insert>
 	
+	<insert id="addAttachByName">
+		<![CDATA[
+		insert into tbl_attach(fullname, bno)
+		values (#{fullname}, #{bno})
+		]]> 
+	</insert>
+	
 	<select id="getAttach" resultType="string">
 		<![CDATA[
 		select fullname 
@@ -182,6 +189,13 @@
 		<![CDATA[
 		delete from tbl_attach
 		 where bno = #{bno}
+		]]> 
+	</delete>
+	
+	<delete id="deleteAttachByFileName">
+		<![CDATA[
+		delete from tbl_attach
+		 where fullname = #{filename}
 		]]> 
 	</delete>
 	

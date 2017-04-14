@@ -20,4 +20,6 @@ public interface BoardService {
 	public int listSearchCount(SearchCriteria cri) throws Exception;
 	
 	public List<String> getAttach(Integer bno) throws Exception;
+	public void deleteAttachByFileName(String  fileName) throws Exception;
+	public void addAttach(String fileName, Integer bno) throws Exception;
 }

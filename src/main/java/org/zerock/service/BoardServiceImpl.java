@@ -61,8 +61,10 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	@Transactional
 	@Override
 	public void remove(Integer bno) throws Exception {
+		dao.deleteAttach(bno);
 		dao.delete(bno);
 	}
 
@@ -95,4 +97,17 @@ public class BoardServiceImpl implements BoardService {
 	public List<String> getAttach(Integer bno) throws Exception {
 		return dao.getAttach(bno);
 	}
+
+	@Override
+	public void deleteAttachByFileName(String fileName) throws Exception {
+		dao.deleteAttachByFileName(fileName);
+	}
+
+	@Override
+	public void addAttach(String fileName, Integer bno) throws Exception {
+		dao.addAttachByName(fileName, bno);		
+	}
+
+	
+	
 }

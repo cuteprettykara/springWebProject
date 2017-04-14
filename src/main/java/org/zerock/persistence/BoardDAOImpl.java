@@ -109,6 +109,11 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
+	public void deleteAttachByFileName(String fullName) throws Exception {
+		sqlSession.delete(namespace + ".deleteAttachByFileName", fullName);	
+	}
+
+	@Override
 	public void replaceAttach(String fullName, Integer bno) throws Exception {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("fullname", fullName);	// 대소문자 주의: fullName 아님
@@ -117,4 +122,12 @@ public class BoardDAOImpl implements BoardDAO {
 		sqlSession.insert(namespace + ".replaceAttach",paramMap);		
 	}
 
+	@Override
+	public void addAttachByName(String fullName, Integer bno) throws Exception {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("fullname", fullName);	// 대소문자 주의: fullName 아님
+		paramMap.put("bno", bno);
+		
+		sqlSession.insert(namespace + ".addAttachByName", paramMap);
+	}
 }

@@ -6,13 +6,13 @@
 		});
 	});
 	
-	$(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
+	$(".uploadedList").on("click", ".mailbox-attachment-name", function(event){
 		
 		var fileLink = $(this).attr("href");
 		
 		if(checkImageType(fileLink)){
-			
 			event.preventDefault();
+			
 					
 			var imgTag = $("#popup_img");
 			imgTag.attr("src", fileLink);

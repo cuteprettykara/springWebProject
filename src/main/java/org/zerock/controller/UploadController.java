@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -20,8 +21,10 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.service.BoardService;
 import org.zerock.util.MediaUtils;
 import org.zerock.util.UploadFileUtils;
 
@@ -32,6 +35,9 @@ public class UploadController {
 	
 	@Resource(name="uploadPath")
 	private String uploadPath;
+	
+	@Inject
+	private BoardService service;
 	
 	@RequestMapping(value="/uploadForm", method=RequestMethod.GET)
 	public void uploadForm() {
@@ -66,14 +72,19 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value="/uploadAjax", method=RequestMethod.POST, produces="text/plain;charset=UTF-8")
-	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception {
+	public ResponseEntity<String> uploadAjax(MultipartFile file, @RequestParam("bno") Integer bno) throws Exception {
 		logger.info("originalName: " + file.getOriginalFilename());
 		logger.info("size: " + file.getSize());
 		logger.info("contentType: " + file.getContentType());
+		logger.info("bno: " + bno);
 		
-		return new ResponseEntity<>(
-			UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes()), 
-			HttpStatus.CREATED);
+		String savedName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
+		
+		// 수정 화면에서만 tbl_attach에 insert
+		// 등록 화면은 pass
+		if (bno.intValue() != 0) service.addAttach(savedName, bno);			
+		
+		return new ResponseEntity<>(savedName, HttpStatus.CREATED);
 	}
 	
 	@ResponseBody
@@ -120,6 +131,13 @@ public class UploadController {
 		
 		logger.info("delete file : " + fileName);
 		
+		delete(fileName);
+		service.deleteAttachByFileName(fileName);
+			
+		return new ResponseEntity<>("deleted", HttpStatus.OK);
+	}
+	
+	private void delete(String fileName) throws Exception {
 		String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
 		MediaType mType = MediaUtils.getMediaType(formatName);
 					
@@ -130,6 +148,21 @@ public class UploadController {
 		}
 			
 		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();	
+	}
+	
+	@ResponseBody
+	@RequestMapping("/deleteAllFiles")
+	public ResponseEntity<String> deleteFile(@RequestParam("files[]") String[] files) throws Exception {
+		
+		logger.info("delete all files: "+ files);
+		
+		if(files == null || files.length == 0) {
+		      return new ResponseEntity<String>("deleted", HttpStatus.OK);
+		}
+		
+		for (String fileName : files) {
+			delete(fileName);
+		}
 			
 		return new ResponseEntity<>("deleted", HttpStatus.OK);
 	}
