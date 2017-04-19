@@ -102,7 +102,7 @@
 				</c:if>
 				<c:if test="${empty login}">
     				<div class="box-body">
-      					<div><a href="javascript:goLogin();" >Login Please</a></div>
+      					<div><a href="/user/login" >Login Please</a></div>
     				</div>
   				</c:if>
 			</div>
